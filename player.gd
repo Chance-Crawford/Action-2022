@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 const acc = 25
-const max_speed = 80
+var max_speed = 50
 const friction = 80
 
 # vector2 holds an x and y coordinate
@@ -9,6 +9,11 @@ const friction = 80
 # in this case this vectore object is initialized to (0,0) since nothing
 # is provided in parentheses
 var motion = Vector2()
+
+# running variables
+var is_running = null
+const walk_speed = 50
+const run_speed = 80
 
 # built in function to Godot
 # this function will run every physics frame. It is used to perform 
@@ -25,9 +30,10 @@ var motion = Vector2()
 # func _physics_process(delta):
 	# Calculate the elapsed time in physics frames
 	# elapsed_time = delta * physics_fps
-
 	# Update the position of the node based on its velocity
 	# position += velocity * elapsed_time
+# By using the delat parameter you can ensure that the physics calculations 
+# are consistent and accurate regardless of the users frame rate
 
 # a PHYSICS FRAME is a unit of time in the physics simulation. The physics 
 # simulation runs independently of the rendering frame rate, and the elapsed 
@@ -52,25 +58,72 @@ func _physics_process(delta):
 	# UI_RIGHT IS an input setting set to a certain type of keys on the keyboard within
 	# project, project settings, input_map. For example "D" could also be labeled under ui_right.
 	input.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	input.y = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
+	input.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	# This line takes the resulting value and normalizes it. Normalizing a vector means 
 	# setting its length to 1 while keeping the direction the same. 
 	# This is used so that diagonal movement ("down" and "right", for example), 
 	# won't be faster, since the length of (1, 1) would be 1.414.
 	input = input.normalized()
 	
+	# created custom key press "run" in project settings (tied to shift key)
+	# if pressed will change is_running var to true, if just released will switch back to 
+	# false again
+	if Input.is_action_pressed("run"):
+		is_running = true
+	if Input.is_action_just_released("run"):
+		is_running = false
+		
 	# if input vector object is not still (0, 0)
 	# meaning a arrow key is being pressed
 	if input != Vector2.ZERO:
+		
+		# if moving to right
+		if input.x > 0:
+			# change animated sprite child node to not be flipped horizontally
+			$AnimatedSprite.flip_h = false
+			# play different animation for node
+			# based on if currently running or not
+			if is_running:
+				$AnimatedSprite.play("run")
+			else:
+				$AnimatedSprite.play("walk")
+		else:
+			# else flip it
+			$AnimatedSprite.flip_h = true
+			# check if running, and play animation
+			if is_running:
+				$AnimatedSprite.play("run")
+			else:
+				$AnimatedSprite.play("walk")
+		
+		# changes max speed based on if running or not
+		if is_running == true:
+			max_speed = run_speed
+		else:
+			max_speed = walk_speed
+			
 		# check delta  definition at top of function. keeps speed cosnistent
 		# with each physics frame.
 		# acc, accelerates the vector to be more than 1.
 		motion += input * acc * delta
-		# this will not allow character to go past max_speed
+		# this will not allow character to go past max_speed so it
+		# does not accelerate forever
 		motion = motion.clamped(max_speed * delta)
 	else:
-		# if no key is currently being pressed, slow down the 
+		# change animated sprite node of player to be idle since we are
+		# no longer moving
+		$AnimatedSprite.play("idle")
+		# if no key is currently being pressed, slow down the motion vector to
+		# (0, 0) and do it at a rate of friction * delta (delta for consistency).
+		# since friction is equal to max speed it should slow down pretty much immediately
 		motion = motion.move_toward(Vector2.ZERO, friction * delta)
+	
+	# all the above code in this function does not move character yet.
+	# move_and_collide is a built in Godot function set to the node
+	# which this script is attached to (the player object).
+	# you can use this function to move the player object based on the
+	# motion Vector2 object
+	move_and_collide(motion)
 
 
 

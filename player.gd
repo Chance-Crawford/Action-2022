@@ -115,7 +115,8 @@ func _physics_process(delta):
 		$AnimatedSprite.play("idle")
 		# if no key is currently being pressed, slow down the motion vector to
 		# (0, 0) and do it at a rate of friction * delta (delta for consistency).
-		# since friction is equal to max speed it should slow down pretty much immediately
+		# since friction is equal to max speed it should slow down pretty much 
+		# immediately
 		motion = motion.move_toward(Vector2.ZERO, friction * delta)
 	
 	# all the above code in this function does not move character yet.

@@ -1054,5 +1054,5 @@ script = ExtResource( 6 )
 new_scene = "res://scene/cave.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="cave_enterance"]
-position = Vector2( 264, 83 )
+position = Vector2( 265, 80 )
 shape = SubResource( 4 )

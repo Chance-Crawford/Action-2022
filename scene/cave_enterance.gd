@@ -7,8 +7,15 @@ extends Area2D
 # in this case since we are exporting a file selection tool that will
 # allow us to select a scene file (ending in tscn or scn) 
 # to put into the new_scene variable from the
-# cave_entrance's inspector menu (usually menu on right side)
+# cave_entrance's inspector menu (usually menu on right side).
+# we can then use a ref to that scene and make logic for it within this
+# script using the new_scene var
 export(String, FILE, "*.tscn,*.scn") var new_scene
+
+# get the global script we created and import it to the variable Global 
+# so we can access the global variables
+# inside of the script
+onready var Global = get_node("/root/Global")
 
 # built in function for godot to get the input from user
 func _input(event):
@@ -31,4 +38,18 @@ func _input(event):
 
 
 func next_level():
-	get_tree().change_scene(new_scene)
+	# will get the current node housing the script. Which is the cave_entrance node
+	# owner, will then go all the way to the top of the current SCENE tree
+	# not the root tree, and get the node there. Which would be the world node or
+	# cave node.
+	# find_node will then search all levels of that scene tree to find the node
+	# named player. Not just the top layer, even multiple levels deep.
+	# we now have a reference to the player node in the current scene
+	# (whether it is the player node in world scene or the cave scene)
+	var player = get_node('.').owner.find_node("player")
+	Global.player_last_pos.x = player.position.x
+	Global.player_last_pos.y = player.position.y
+	print(Global.player_last_pos)
+	#get_tree().change_scene(new_scene)
+	
+	

@@ -1051,7 +1051,8 @@ polygon = PoolVector2Array( 60, 29, 70, 30, 76, 30, 140, 30, 143, 27, 145, 16, 1
 
 [node name="cave_enterance" type="Area2D" parent="."]
 script = ExtResource( 6 )
+new_scene = "res://scene/cave.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="cave_enterance"]
-position = Vector2( 264, 84 )
+position = Vector2( 264, 83 )
 shape = SubResource( 4 )

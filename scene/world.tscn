@@ -983,3 +983,8 @@ tile_data = PoolIntArray( 3, 2, 0, 4, 2, 0, 5, 2, 0, 6, 2, 0, 7, 2, 0, 8, 2, 0, 
 
 [node name="player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 92, 64 )
+
+[node name="collisions" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="collisions"]
+polygon = PoolVector2Array( 60, 29, 70, 30, 76, 30, 140, 30, 143, 27, 145, 16, 153, 16, 153, 56, 153, 85, 155, 86, 178, 87, 182, 82, 181, 17, 193, 17, 192, 96, 224, 96, 224, 79, 258, 79, 278, 79, 383, 79, 384, 30, 401, 30, 400, 80, 465, 80, 465, 191, 462, 192, 224, 191, 224, 254, 49, 254, 49, 230, 196, 230, 199, 225, 200, 184, 195, 179, 155, 179, 152, 184, 152, 196, 60, 194, 61, 34, 34, 7, 30, 275, 531, 280, 531, -8, 38, -16 )

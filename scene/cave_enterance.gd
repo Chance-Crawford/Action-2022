@@ -47,9 +47,12 @@ func next_level():
 	# we now have a reference to the player node in the current scene
 	# (whether it is the player node in world scene or the cave scene)
 	var player = get_node('.').owner.find_node("player")
-	Global.player_last_pos.x = player.position.x
-	Global.player_last_pos.y = player.position.y
-	print(Global.player_last_pos)
-	#get_tree().change_scene(new_scene)
+	# save the global var to the current position where they entered
+	# only if there isnt a position saved already
+	if Global.player_last_pos == Vector2.ZERO:
+		Global.player_last_pos.x = player.position.x
+		Global.player_last_pos.y = player.position.y
+		print(Global.player_last_pos)
+	get_tree().change_scene(new_scene)
 	
 	

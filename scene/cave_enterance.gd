@@ -53,6 +53,7 @@ func next_level():
 		Global.player_last_pos.x = player.position.x
 		Global.player_last_pos.y = player.position.y
 		print(Global.player_last_pos)
+	
 	get_tree().change_scene(new_scene)
 	
 	

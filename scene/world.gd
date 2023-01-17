@@ -1,9 +1,11 @@
 extends Node2D
 
+# onready waits for scene to load all components before setting var.
 # get the global script we created and import it to the variable Global 
 # so we can access the global variables
 # inside of the script
 onready var Global = get_node('/root/Global')
+# onready waits for scene to load all components before setting var.
 # see cave_entrance.gd
 # since this is already the root node of the scene we can just say find_node
 # to search all node paths
